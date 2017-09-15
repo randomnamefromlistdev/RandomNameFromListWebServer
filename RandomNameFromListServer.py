@@ -2,6 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import SocketServer
 import simplejson
 import random
+from StringIO import StringIO as IO
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -17,6 +18,13 @@ class S(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self._set_headers()
 
+    def _write_and_save_response(self,data):
+        self.response = data
+        self.wfile.write(data) 
+
+    def get_response(self):
+        return self.response
+
     def do_POST(self):
         self._set_headers()
         print "in post method"
@@ -30,9 +38,34 @@ class S(BaseHTTPRequestHandler):
         names = data['names']
         print "{}".format(names)
         random_name = random.choice(names)
-        self.wfile.write(simplejson.dumps(random_name))
+        self._write_and_save_response(simplejson.dumps(random_name))
         return
 
+def test_handler( request_text ):
+    class MockRequest(object):
+
+        def __init__(self,request_text):
+            self.request_text = request_text
+        
+        def makefile(self, *args, **kwargs):
+            test_string = ('POST / HTTP/1.1\r\n'
+                           'Host: www.example.com\r\n'
+                           'Content-Type: application/json; charset=utf-8\r\n'
+                           'Content-Length: ' + str(len(self.request_text)) + '\r\n'
+                           '\r\n'
+                            )
+            test_string = test_string + self.request_text
+            return IO(test_string)
+
+    class MockServer(object):
+        def __init__(self, ip_port, Handler, request_text):
+            self.handler = Handler(MockRequest(request_text), ip_port, self) 
+
+        def get_response(self):
+            return self.handler.get_response()
+
+    server = MockServer(('0.0.0.0', 8888), S, request_text)
+    return server.get_response()
 
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
@@ -43,7 +76,7 @@ def run(server_class=HTTPServer, handler_class=S, port=80):
 if __name__ == "__main__":
     from sys import argv
 
-if len(argv) == 2:
-    run(port=int(argv[1]))
-else:
-    run()
+    if len(argv) == 2:
+        run(port=int(argv[1]))
+    else:
+        run()
