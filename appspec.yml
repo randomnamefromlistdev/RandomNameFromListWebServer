@@ -2,11 +2,13 @@ version: 0.0
 os: linux
 files:
   - source: RandomNameFromListServer.py 
-    destination: /webapps/RandomNameFromListServer.py
+    destination: /webapps
   - source: index.html
-    destination: /webapps/index.html
-  - source: launch.sh 
-    destination: /webapps/launch.sh
+    destination: /webapps
+permissions:
+  - object: /webapps
+    pattern: *.py
+    mode: 755
 hooks:
   ApplicationStart:
     - location: launch.sh
