@@ -18,10 +18,10 @@ permissions:
     mode: 777
 hooks:
   ApplicationStop:
-    - location: shutdown.sh
+    - location: /webapps/shutdown.sh
       timeout: 60
       runas: root
   ApplicationStart:
-    - location: launch.sh
+    - location: /webapps/launch.sh
       timeout: 60
       runas: root
