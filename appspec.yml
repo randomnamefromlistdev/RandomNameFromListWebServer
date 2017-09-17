@@ -5,10 +5,17 @@ files:
     destination: /webapps
   - source: index.html
     destination: /webapps
+  - source: launch.sh
+    destination: /webapps
+  - source: shutdown.sh
+    destination: /webapps
 permissions:
   - object: /webapps
     pattern: "*.py"
     mode: 755
+  - object: /webapps
+    pattern: "*.sh"
+    mode: 777
 hooks:
   ApplicationStop:
     - location: shutdown.sh
