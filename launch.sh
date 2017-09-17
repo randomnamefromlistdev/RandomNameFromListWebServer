@@ -1,1 +1,0 @@
-python /webapps/RandomNameFromListServer.py &
