@@ -5,23 +5,21 @@ files:
     destination: /webapps
   - source: index.html
     destination: /webapps
-  - source: launch.sh
-    destination: /webapps
-  - source: shutdown.sh
-    destination: /webapps
 permissions:
   - object: /webapps
     pattern: "*.py"
     mode: 755
-  - object: /webapps
+  - object: /opt/codedeploy-agent/deployment-root
     pattern: "*.sh"
     mode: 777
+    type:
+      - directory
 hooks:
   ApplicationStop:
-    - location: /webapps/shutdown.sh
+    - location: shutdown.sh
       timeout: 60
       runas: root
   ApplicationStart:
-    - location: /webapps/launch.sh
+    - location: launch.sh
       timeout: 60
       runas: root
