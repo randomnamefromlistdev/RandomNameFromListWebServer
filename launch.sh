@@ -1,1 +1,1 @@
-python RandomNameFromListServer.py
+python /webapps/RandomNameFromListServer.py

@@ -9,6 +9,6 @@ files:
     destination: /webapps/launch.sh
 hooks:
   ApplicationStart:
-    - location: /webapps/launch.sh
+    - location: launch.sh
       timeout: 3600
       runas: root
