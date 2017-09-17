@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: RandomNameFromListServer.py 
+    destination: /webapps/RandomNameFromListServer.py
+  - source: index.html
+    destination: /webapps/index.html
+  - source: launch.sh 
+    destination: /webapps/launch.sh
+hooks:
+  ApplicationStart:
+    - location: /webapps/launch.sh
+      timeout: 3600
+      runas: root
