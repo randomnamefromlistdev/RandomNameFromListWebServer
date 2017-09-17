@@ -7,7 +7,7 @@ files:
     destination: /webapps
 permissions:
   - object: /webapps
-    pattern: *.py
+    pattern: "*.py"
     mode: 755
 hooks:
   ApplicationStart:
