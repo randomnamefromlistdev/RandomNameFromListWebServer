@@ -34,6 +34,8 @@ class S(BaseHTTPRequestHandler):
         names = data['names']
         print "{}".format(names)
         random_name = random.choice(names)
+        self.send_response(200)
+        self.end_headers()
         self._write_and_save_response(simplejson.dumps(random_name))
         return
 
