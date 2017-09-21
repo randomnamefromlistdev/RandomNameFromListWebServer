@@ -29,10 +29,6 @@ class S(BaseHTTPRequestHandler):
         self._set_headers()
         print "in post method"
         self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-
-        self.send_response(200)
-        self.end_headers()
-
         data = simplejson.loads(self.data_string)
         print "{}".format(data)
         names = data['names']
